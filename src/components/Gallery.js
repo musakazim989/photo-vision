@@ -1,5 +1,14 @@
 import React from "react"
-import { Navbar, Container, Nav, Row, Col, Button, Card } from "react-bootstrap"
+import {
+  Navbar,
+  Container,
+  Nav,
+  Row,
+  Col,
+  Button,
+  Card,
+  NavDropdown,
+} from "react-bootstrap"
 
 const Gallery = () => {
   return (
@@ -10,35 +19,47 @@ const Gallery = () => {
           <Nav className="justify-content-end">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#features">Login</Nav.Link>
+            <NavDropdown
+              title={
+                <Card.Img
+                  className="user-img"
+                  src="images/user/user1.jpg
+              "
+                />
+              }
+              id="basic-nav-dropdown"
+            >
+              <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Container>
       </Navbar>
       <Container>
         <Row>
-          <Col lg={8}>
-            <div className="mt-5">
-              <label for="formFile" class="form-label">
-                Default file input example
-              </label>
+          <Col lg={4} className="mt-5">
+            <div className="mt-5 ms-1">
               <input class="form-control" type="file" id="formFile"></input>
-              <Button variant="primary" className="mt-3">
-                Go somewhere
-              </Button>
             </div>
           </Col>
-          <Col lg={4}>
-            <Card style={{ width: "8rem" }}>
-              <Card.Img
-                className="user-img"
-                variant="top"
-                src="images/user/user1.jpg
-              "
-              />
-            </Card>
-            <Button variant="primary" className="mt-3">
-              Go somewhere
+          <Col lg={2} className="mt-5">
+            <Button variant="primary" className="mt-5">
+              Upload
             </Button>
           </Col>
+        </Row>
+
+        <Row className="mt-5 mb-4">
+          <Card className="my-card ms-3 me-3 " style={{ width: "18rem" }}>
+            <Card.Img variant="top" src="images/gallery/gal1.jpg" />
+            <Card.Body>
+              <Card.Title>Card Title</Card.Title>
+              <Card.Text>
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </Card.Text>
+              <Button variant="danger">Delete</Button>
+            </Card.Body>
+          </Card>
         </Row>
       </Container>
     </>

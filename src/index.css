@@ -12,8 +12,14 @@ code {
     monospace;
 }
 
-.card-img-top {
-}
 .user-img {
-  border-radius: 5px !important;
+  width: 36px;
+  height: 36px;
+  border-radius: 50% !important;
+  object-fit: cover;
+}
+
+.my-card {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
