@@ -1,4 +1,11 @@
-import React from "react"
+import { async } from "@firebase/util"
+import {
+  getDownloadURL,
+  uploadBytes,
+  uploadBytesResumable,
+  ref,
+} from "firebase/storage"
+import React, { useContext, Dispatch, useState } from "react"
 import {
   Navbar,
   Container,
@@ -8,41 +15,68 @@ import {
   Button,
   Card,
   NavDropdown,
+  Alert,
+  ProgressBar,
 } from "react-bootstrap"
+import { storage } from "../Config"
 
 const Gallery = () => {
+  const [uploadWarning, setuploadWarning] = useState("")
+  const [uploadProgress, setuploadProgress] = useState("")
+  const [errImage, setErrimage] = useState("")
+  const [upimage, setUpimage] = useState("")
+
+  let uploadSubmit = () => {
+    if (upimage) {
+      let storageRef = ref(storage, `files/${upimage.name}`)
+      let uploadtask = uploadBytesResumable(storageRef, upimage)
+
+      uploadtask.on(
+        "state_changed",
+        (snapshot) => {
+          let progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          )
+          setuploadProgress(progress)
+        },
+        (err) => {
+          setErrimage(err)
+        },
+        () => {
+          getDownloadURL(uploadtask.snapshot.ref).then((url) => {
+            console.log(url)
+          })
+        }
+      )
+    } else {
+      setuploadWarning("No image")
+    }
+  }
+
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">Photo Vision</Navbar.Brand>
-          <Nav className="justify-content-end">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Login</Nav.Link>
-            <NavDropdown
-              title={
-                <Card.Img
-                  className="user-img"
-                  src="images/user/user1.jpg
-              "
-                />
-              }
-              id="basic-nav-dropdown"
-            >
-              <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Container>
-      </Navbar>
+    
       <Container>
         <Row>
           <Col lg={4} className="mt-5">
             <div className="mt-5 ms-1">
-              <input class="form-control" type="file" id="formFile"></input>
+              <input
+                onChange={(e) => setUpimage(e.target.files[0])}
+                className="form-control"
+                type="file"
+                id="formFile"
+              ></input>
+              {upimage ? (
+                ""
+              ) : (
+                <Alert className="mt-3" variant={"danger"}>
+                  {uploadWarning}
+                </Alert>
+              )}
             </div>
           </Col>
           <Col lg={2} className="mt-5">
-            <Button variant="primary" className="mt-5">
+            <Button onClick={uploadSubmit} variant="primary" className="mt-5">
               Upload
             </Button>
           </Col>
