@@ -1,4 +1,3 @@
-import { async } from "@firebase/util"
 import {
   getDownloadURL,
   uploadBytes,
@@ -19,6 +18,7 @@ import {
   ProgressBar,
 } from "react-bootstrap"
 import { storage } from "../Config"
+
 
 const Gallery = () => {
   const [uploadWarning, setuploadWarning] = useState("")
@@ -55,7 +55,6 @@ const Gallery = () => {
 
   return (
     <>
-    
       <Container>
         <Row>
           <Col lg={4} className="mt-5">

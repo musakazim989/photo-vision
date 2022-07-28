@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -12,6 +13,17 @@ const Login = () => {
 
   let handleSubmit = (e) => {
     e.preventDefault()
+
+    const auth = getAuth()
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user
+        navigate("/gallery")
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+      })
   }
 
   return (

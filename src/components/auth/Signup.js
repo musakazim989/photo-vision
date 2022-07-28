@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { getAuth, createUserWithEmailAndPassword } from "../../Config"
 
 const SignUp = () => {
+  let navigate = useNavigate()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -17,6 +18,8 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential)
+
+        navigate("/signin")
       })
       .catch((error) => {
         const errorCode = error.code
@@ -26,6 +29,15 @@ const SignUp = () => {
         // ..
       })
   }
+
+  //  createUserWithEmailAndPassword(email, password)
+  // .then(function(result) {
+  //   return result.user.updateProfile({
+  //     displayName: document.getElementById("name").value
+  //   })
+  // }).catch(function(error) {
+  //   console.log(error);
+  // });
 
   return (
     <>

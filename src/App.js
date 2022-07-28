@@ -1,10 +1,24 @@
+import { Routes, Route, Link, useNavigate } from "react-router-dom"
 import Gallery from "./components/Gallery"
-import { Routes, Route, Link } from "react-router-dom"
 import Signin from "./components/auth/Signin"
 import SignUp from "./components/auth/Signup"
 import Home from "./components/Home"
 import { Navbar, Container, Nav, Card, NavDropdown } from "react-bootstrap"
+import { getAuth, signOut } from "firebase/auth"
 function App() {
+  const navigate = useNavigate()
+  let handleSignOut = () => {
+    const auth = getAuth()
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        navigate("/")
+      })
+      .catch((error) => {
+        // An error happened.
+      })
+  }
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -27,7 +41,9 @@ function App() {
               }
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleSignOut}>
+                Sign out
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Container>
@@ -36,6 +52,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="signin" element={<Signin />} />
         <Route path="signup" element={<SignUp />} />
+        <Route path="gallery" element={<Gallery />} />
       </Routes>
     </>
   )
